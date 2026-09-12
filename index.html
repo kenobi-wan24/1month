@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>One Month</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body class="locked">
+
+<!-- background stack -->
+<div class="sky" aria-hidden="true"></div>
+<div class="sun" aria-hidden="true"></div>
+<div class="clouds" id="clouds" aria-hidden="true"></div>
+<div class="rays" aria-hidden="true"><span></span><span></span><span></span></div>
+<div class="bg-photos" id="bgPhotos" aria-hidden="true"></div>
+<div class="hills" aria-hidden="true">
+  <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="hill hill--far">
+    <path d="M0,190 C220,120 380,210 620,165 C860,120 1060,200 1240,155 C1330,133 1390,150 1440,140 L1440,320 L0,320 Z"/>
+  </svg>
+  <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="hill hill--mid">
+    <path d="M0,235 C180,180 420,255 660,215 C900,175 1100,245 1300,205 C1370,191 1410,200 1440,195 L1440,320 L0,320 Z"/>
+  </svg>
+  <svg viewBox="0 0 1440 320" preserveAspectRatio="none" class="hill hill--near">
+    <path d="M0,275 C240,240 460,290 720,262 C980,234 1180,285 1440,255 L1440,320 L0,320 Z"/>
+  </svg>
+</div>
+<div class="grass" id="grass" aria-hidden="true"></div>
+<div class="bugs" id="bugs" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+<div class="bg-vignette" aria-hidden="true"></div>
+
+<!-- ════════ GATE ════════ -->
+<div class="gate" id="gate">
+  <div class="gate__inner">
+    <p class="gate__hint">for Alifianna</p>
+    <button class="gate__btn" id="gateBtn">tap to begin</button>
+    <p class="gate__note">best with sound on</p>
+  </div>
+</div>
+
+<!-- ════════ PART 1 — INTRO ════════ -->
+<div class="film" id="film" hidden>
+  <button class="skip" id="skipBtn">skip &rsaquo;</button>
+
+  <!-- bloom -->
+  <section class="scene scene--bloom" id="sceneBloom">
+    <div class="garden" id="garden"></div>
+    <p class="bloom__text" id="bloomText">for my beautiful girl</p>
+  </section>
+
+  <!-- timeline -->
+  <section class="scene scene--timeline" id="sceneTimeline" hidden>
+    <div class="tl-progress"><span id="tlBar"></span></div>
+    <div class="tl-stage" id="tlStage"></div>
+  </section>
+
+  <!-- handoff -->
+  <section class="scene scene--handoff" id="sceneHandoff" hidden>
+    <p class="handoff__big" id="handoffBig">one month</p>
+    <p class="handoff__sub" id="handoffSub">but a month doesn't fit in a slideshow &mdash;</p>
+  </section>
+</div>
+
+<!-- ════════ PART 2 — GUIDED CHAPTER ════════ -->
+<div class="chapter" id="chapter" hidden>
+
+  <!-- ① love meter -->
+  <section class="card" id="stepMeter">
+    <p class="label">one</p>
+    <h2 class="display">How much do you love me?</h2>
+    <div class="meter">
+      <div class="meter__chibi" id="meterChibi"></div>
+      <div class="meter__read"><span id="meterVal">0</span><span class="meter__pct">%</span></div>
+      <p class="meter__say" id="meterSay">go on then.</p>
+      <div class="meter__arc">
+        <svg viewBox="0 0 200 108" class="arc">
+          <path class="arc__bg" d="M14,100 A86,86 0 0,1 186,100"/>
+          <path class="arc__fill" id="arcFill" d="M14,100 A86,86 0 0,1 186,100"/>
+        </svg>
+      </div>
+      <input type="range" id="meterInput" min="0" max="200" value="0" step="1" aria-label="love meter"/>
+      <p class="meter__hint">drag it &mdash; it goes past 100</p>
+    </div>
+    <button class="btn next" data-next="stepBouquet" disabled id="meterNext">next</button>
+  </section>
+
+  <!-- ② bouquet -->
+  <section class="card" id="stepBouquet" hidden>
+    <p class="label">two</p>
+    <h2 class="display">Pick your stems</h2>
+    <p class="card__sub">every lily is holding something I think about you.</p>
+    <div class="bq">
+      <div class="bq__vase" id="bqVase"></div>
+      <p class="bq__note" id="bqNote">tap a lily</p>
+      <div class="bq__picks" id="bqPicks"></div>
+    </div>
+    <button class="btn next" data-next="stepGifts" disabled id="bqNext">next</button>
+  </section>
+
+  <!-- ③ gifts -->
+  <section class="card" id="stepGifts" hidden>
+    <p class="label">three</p>
+    <h2 class="display">You passed the love test</h2>
+    <p class="card__sub">three things, for whenever you need them.</p>
+    <div class="gifts" id="gifts"></div>
+    <button class="btn next" data-next="__release" id="giftNext">there's more &darr;</button>
+  </section>
+
+  <div class="letter-modal" id="letterModal" hidden>
+    <button class="letter__close" id="letterClose" aria-label="close">&times;</button>
+    <article class="letter">
+      <p class="letter__when" id="letterWhen"></p>
+      <div class="letter__body" id="letterBody"></div>
+    </article>
+  </div>
+</div>
+
+<!-- ════════ PART 3 — WHAT COMES NEXT ════════ -->
+<main class="rest" id="rest" hidden>
+
+  <!-- countdown -->
+  <section class="section">
+    <p class="label reveal">where we are</p>
+    <h2 class="display reveal" id="cdTitle">Counting</h2>
+    <div class="cd reveal" id="cd"></div>
+    <p class="cd__line reveal" id="cdLine"></p>
+  </section>
+
+  <!-- where we'll go -->
+  <section class="section">
+    <p class="label reveal">someday</p>
+    <h2 class="display reveal">Where I'm taking you</h2>
+    <div class="places reveal" id="places"></div>
+    <p class="muted center reveal">tap each one</p>
+  </section>
+
+  <!-- reasons jar -->
+  <section class="section">
+    <p class="label reveal">whenever you need one</p>
+    <h2 class="display reveal">The reasons jar</h2>
+    <div class="jar reveal">
+      <button class="jar__btn" id="jarBtn">
+        <span class="jar__glass"><span class="jar__fill" id="jarFill"></span></span>
+        <span class="jar__label">pull one out</span>
+      </button>
+      <p class="jar__out" id="jarOut"></p>
+      <p class="jar__count" id="jarCount"></p>
+    </div>
+  </section>
+
+  <!-- the ask -->
+  <section class="section section--ask">
+    <div class="ask reveal" id="ask">
+      <h2 class="display display--lg">Will you be mine<br/>forever?</h2>
+      <div class="ask__btns">
+        <button class="ask__yes" id="askYes">yes</button>
+        <button class="ask__no" id="askNo">no</button>
+      </div>
+      <p class="ask__taunt" id="askTaunt"></p>
+    </div>
+    <div class="ask__done" id="askDone" hidden>
+      <p class="display display--lg">I was counting on that, good girl.</p>
+    </div>
+  </section>
+
+  <!-- certificate -->
+  <section class="section">
+    <p class="label reveal">make it official</p>
+    <h2 class="display reveal">The paperwork</h2>
+    <div class="cert-wrap reveal">
+      <div class="cert" id="cert">
+        <p class="cert__ribbon">official &amp; legally adorable</p>
+        <h3 class="cert__title">Certificate of<br/><em>Being Mine</em></h3>
+        <p class="cert__pre">this hereby certifies that</p>
+        <p class="cert__names"><span id="certA">Alifianna</span><br/><span class="cert__amp">&amp;</span><br/><span id="certB">Kenneth</span></p>
+        <p class="cert__pre">have survived one entire month of</p>
+        <p class="cert__sub">bad timing, worse wifi, and roughly nine thousand messages</p>
+        <ul class="cert__terms" id="certTerms"></ul>
+        <div class="cert__foot">
+          <div><span class="cert__sig">&#10084;</span><p>signed, him</p></div>
+          <div class="cert__seal"><span>1</span><small>month</small></div>
+          <div><span class="cert__sig">&#10084;</span><p>signed, her</p></div>
+        </div>
+        <p class="cert__date" id="certDate"></p>
+      </div>
+    </div>
+    <button class="btn reveal" id="certDl">download it</button>
+  </section>
+
+  <!-- time capsule -->
+  <section class="section section--capsule">
+    <p class="label reveal">not for today</p>
+    <h2 class="display reveal">The time capsule</h2>
+    <div class="cap reveal" id="cap">
+      <div class="cap__box" id="capBox">
+        <div class="cap__seal" id="capSeal">
+          <span class="cap__wax">&#10084;</span>
+        </div>
+        <p class="cap__label" id="capLabel">sealed</p>
+      </div>
+      <p class="cap__meta" id="capMeta"></p>
+      <p class="cap__say" id="capSay">tap it</p>
+      <div class="cap__peek" id="capPeek" hidden></div>
+    </div>
+  </section>
+
+  <!-- close -->
+  <section class="section section--closing">
+    <div class="closing reveal">
+      <p class="label label--rose">and so</p>
+      <p class="closing__big">Happy one month,<br/><em>Alifianna</em></p>
+      <button class="btn" id="replay">watch it again</button>
+    </div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
