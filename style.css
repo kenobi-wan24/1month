@@ -121,7 +121,7 @@ body.locked{overflow:hidden;height:100vh}
 
 /* her photos, floating far away */
 .bg-photos{overflow:hidden}
-.bg-photos figure{position:absolute;width:var(--w,180px);border-radius:3px;overflow:hidden;opacity:0;filter:blur(1.6px) saturate(.85);box-shadow:0 20px 60px rgba(30,50,60,.3);animation:floatPhoto var(--d,46s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+.bg-photos figure{position:absolute;width:var(--w,180px);border-radius:3px;overflow:hidden;opacity:0;filter:blur(3.5px) saturate(.55);box-shadow:0 20px 60px rgba(30,50,60,.3);animation:floatPhoto var(--d,46s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
 .bg-photos img{width:100%;display:block}
 .bg-photos figure.on{opacity:var(--o,.13)}
 @keyframes floatPhoto{from{transform:translate3d(0,0,0) rotate(var(--r,-2deg))}to{transform:translate3d(var(--dx,20px),var(--dy,-40px),0) rotate(calc(var(--r,-2deg)*-1))}}
@@ -278,14 +278,6 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:none;border-ra
 .cd__line{font-family:var(--display);font-style:italic;font-size:clamp(1.05rem,3.2vw,1.45rem);color:#3E5C63;text-align:center;margin-top:1.4rem;max-width:34ch}
 
 /* places */
-.places{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;width:100%;max-width:840px;margin-top:1rem}
-.place{position:relative;min-height:150px;border:1px solid rgba(90,120,130,.24);background:rgba(250,247,240,.82);backdrop-filter:blur(6px);cursor:pointer;padding:1.4rem;display:flex;flex-direction:column;justify-content:center;gap:.5rem;text-align:center;transition:border-color .35s,transform .35s,background .35s}
-.place:hover{border-color:var(--rose);transform:translateY(-5px)}
-.place__n{font-family:var(--mono);font-size:.6rem;letter-spacing:.24em;color:#C07E7E}
-.place__name{font-family:var(--display);font-size:clamp(1.3rem,3.6vw,1.7rem);color:#2C4A52;font-style:italic}
-.place__what{font-size:.98rem;color:#41595F;opacity:0;max-height:0;overflow:hidden;transition:opacity .45s ease,max-height .45s ease}
-.place.open .place__what{opacity:1;max-height:120px}
-.place.open{background:rgba(240,222,222,.9)}
 
 /* jar */
 .jar{display:flex;flex-direction:column;align-items:center;gap:1.2rem;margin-top:1rem}
@@ -495,4 +487,74 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:none;border-ra
   .garden{height:min(72vh,600px)}
   .gl{width:clamp(140px,13vw,185px)}
   .gl__head{width:clamp(140px,13vw,185px);height:clamp(140px,13vw,185px)}
+}
+
+/* a bud that swells then splits open */
+.gl__bud{
+  position:absolute;left:50%;top:0;
+  width:clamp(16px,4.2vw,26px);height:clamp(26px,6.6vw,40px);
+  margin-left:calc(clamp(16px,4.2vw,26px) / -2);
+  transform:translateY(-46%) scale(0);
+  transform-origin:50% 90%;
+  background:linear-gradient(170deg,#9FD3B6 0%,#5E9E86 48%,#7FA9DA 100%);
+  border-radius:50% 50% 46% 46% / 68% 68% 32% 32%;
+  box-shadow:inset -2px -3px 6px rgba(40,80,70,.3);
+  animation:glBud 1.5s cubic-bezier(.2,.8,.3,1) forwards;
+  animation-delay:var(--bd,1s);
+}
+@keyframes glBud{
+  0%  {transform:translateY(-46%) scale(0) rotate(-6deg);opacity:0}
+  40% {transform:translateY(-46%) scale(1) rotate(2deg);opacity:1}
+  72% {transform:translateY(-46%) scale(1.12) rotate(-2deg);opacity:1}
+  100%{transform:translateY(-46%) scale(1.5) rotate(0deg);opacity:0}
+}
+
+/* sparkle burst */
+.spk{
+  position:fixed;width:11px;height:11px;pointer-events:none;z-index:54;
+  background:
+    radial-gradient(circle,rgba(255,252,225,.95) 0 14%,transparent 15%),
+    conic-gradient(from 0deg,transparent 0 42deg,#FFF3B8 45deg,transparent 48deg 132deg,
+      #FFF3B8 135deg,transparent 138deg 222deg,#FFF3B8 225deg,transparent 228deg 312deg,
+      #FFF3B8 315deg,transparent 318deg);
+  filter:drop-shadow(0 0 5px rgba(255,240,180,.85));
+}
+
+/* ── timeline: sticky-note captions, her deck's energy ── */
+.tl-note{
+  position:absolute;z-index:4;
+  background:#FFFDF6;color:#3A2E2E;
+  font-family:var(--sans);font-size:clamp(.72rem,2.3vw,.9rem);
+  font-weight:500;line-height:1.45;
+  padding:.7rem .95rem;max-width:min(58%,240px);
+  box-shadow:0 10px 26px rgba(30,50,60,.3);
+  transform:rotate(var(--nr,-3deg)) scale(.6);
+  opacity:0;
+  border-radius:2px;
+}
+.tl-slide.on .tl-note{
+  animation:noteIn .7s cubic-bezier(.2,.9,.3,1.2) forwards;
+  animation-delay:.85s;
+}
+@keyframes noteIn{to{opacity:1;transform:rotate(var(--nr,-3deg)) scale(1)}}
+.tl-note::before{
+  content:"";position:absolute;top:-8px;left:50%;margin-left:-16px;
+  width:32px;height:14px;background:rgba(215,159,159,.55);
+  border-radius:2px;transform:rotate(-4deg);
+}
+.tl-note--tl{top:7%;left:5%;--nr:-4deg}
+.tl-note--tr{top:11%;right:5%;--nr:3.5deg}
+.tl-note--bl{bottom:26%;left:6%;--nr:2.5deg}
+
+/* a couple of floating hearts on the sweeter slides */
+.tl-hearts i{
+  position:absolute;bottom:18%;color:#E9A6B4;pointer-events:none;
+  font-size:var(--hs,16px);opacity:0;
+  animation:tlHeart 3.4s ease-out forwards;
+  animation-delay:var(--hd,1s);
+}
+@keyframes tlHeart{
+  0%{opacity:0;transform:translateY(0) scale(.5)}
+  20%{opacity:.95}
+  100%{opacity:0;transform:translateY(-150px) translateX(var(--hx,14px)) scale(1.15)}
 }
