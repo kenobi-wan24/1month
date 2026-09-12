@@ -16,20 +16,43 @@ const CONFIG = {
      "image" (singular), so that's what this is set to. If you
      ever rename the folder, change it here and nowhere else. */
   imageDir: "image/",
-  autoCount: 0,              // set to 35 once photos are named photo1.jpg...
+  autoCount: 6,              // photo1..photo6 are in your image folder
   autoPrefix: "photo",
   autoExt: ".jpg",
 
-  /* ── PART 1: timeline slides (6-8 is the sweet spot) ───── */
+  /* ── PART 1: timeline slides ────────────────────────────
+     photo : file in your image folder
+     date  : small label (optional, "" hides it)
+     line  : the main caption
+     note  : optional sticky note, her-deck energy (optional)
+     pos   : where the note sits — "tl" | "tr" | "bl"
+     hearts: true to float little hearts up the slide         */
   timeline: [
-    { photo:"photo1.jpg", date:"day one",   line:"the map where you said yes." },
-    { photo:"photo2.jpg", date:"week one",  line:"[ one line about this moment ]" },
-    { photo:"photo3.jpg", date:"",          line:"[ one line ]" },
-    { photo:"photo4.jpg", date:"",          line:"[ one line ]" },
-    { photo:"photo5.jpg", date:"",          line:"[ one line ]" },
-    { photo:"photo6.jpg", date:"last week", line:"[ one line ]" },
+    { photo:"photo1.jpg", date:"day one",
+      line:"carried me like a babi",
+      note:"you circled this map. I just took screenshot lol.",
+      pos:"tr", hearts:true },
+    { photo:"photo2.jpg", date:"",
+      line:"you dragged me up a mountain. SHE'S STRONK!.",
+      note:"This is the time my girlfriend get freaky loll xD.",
+      pos:"tl" },
+    { photo:"photo3.jpg", date:"",
+      line:"you drew for me before you ever said it out loud.",
+      note:"I was being oblivious. allegedly.",
+      pos:"bl" },
+    { photo:"photo4.jpg", date:"",
+      line:"a bunny holding a heart. subtle.",
+      note:"\"SHE SO KYUT GUYSS HAHAHA\" \u2014 you, later",
+      pos:"tr", hearts:true },
+    { photo:"photo5.jpg", date:"",
+      line:"we spent like 7 hours here on call.",
+      note:"", pos:"tl" },
+    { photo:"photo6.jpg", date:"",
+      line:"bugged but looks like my girlfriend is carrying a big ahh pengu",
+      note:"1/4 pieces collected. 4/4 terrified.",
+      pos:"tr" },
   ],
-  slideMs: 4200,             // how long each slide holds
+  slideMs: 5200,             // how long each slide holds
 
   /* ── PART 2a: love meter reactions ─────────────────────── */
   /* img: put cropped TRANSPARENT pngs in images/. Falls back
@@ -68,14 +91,6 @@ const CONFIG = {
       "Listen to me: you are not too much, and you are not not enough. You never were.",
       "You don't have to be perfect, or the top of anything, or anyone but yourself to be worth loving. I chose you exactly as you are — and I'd choose you again every single time. You are enough. Full stop.",
     ]},
-  ],
-
-  /* ── PART 3a: where we'll go ───────────────────────────── */
-  places: [
-    { name:"the waterfall",  what:"the real one. not the one we rendered." },
-    { name:"[ place two ]",  what:"[ what you'll do there ]" },
-    { name:"[ place three ]",what:"[ what you'll do there ]" },
-    { name:"[ place four ]", what:"[ what you'll do there ]" },
   ],
 
   /* ── PART 3b: reasons jar (aim for ~35) ────────────────── */
@@ -129,6 +144,8 @@ const CONFIG = {
       "[ She can't read it until then — so be honest. ]",
     ],
   },
+
+
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -239,7 +256,7 @@ function buildBgPhotos(){
     f.style.setProperty("--delay",(Math.random()*-30).toFixed(1)+"s");
     f.style.setProperty("--dx",(Math.random()*60-30).toFixed(0)+"px");
     f.style.setProperty("--dy",(-30-Math.random()*50).toFixed(0)+"px");
-    f.style.setProperty("--o",(.10+Math.random()*.06).toFixed(2));
+    f.style.setProperty("--o",(.055+Math.random()*.035).toFixed(2));
     const im=new Image(); im.src=PHOTOS[i%PHOTOS.length]; im.alt="";
     im.onload=()=>f.classList.add("on"); im.onerror=()=>f.remove();
     f.appendChild(im); l.appendChild(f);
@@ -377,10 +394,13 @@ function startFilm(){
 
 function bloom(){
   const g=$("garden");
+  // five lilies now — a proper little patch, growing left to right
   const specs=[
-    {h:.60, sc:.80, d:.30, bloom:2.15},
-    {h:.92, sc:1.00, d:.00, bloom:1.80},
-    {h:.72, sc:.88, d:.52, bloom:2.42},
+    {h:.46, sc:.66, d:.85, bloom:3.10, z:1},
+    {h:.64, sc:.82, d:.30, bloom:2.35, z:2},
+    {h:.95, sc:1.00, d:.00, bloom:1.95, z:3},
+    {h:.72, sc:.88, d:.55, bloom:2.70, z:2},
+    {h:.50, sc:.70, d:1.05, bloom:3.45, z:1},
   ];
   specs.forEach((sp,i)=>{
     const el=document.createElement("div");
@@ -388,13 +408,15 @@ function bloom(){
     el.style.setProperty("--h",(sp.h*100)+"%");
     el.style.setProperty("--sc",sp.sc);
     el.style.setProperty("--d",sp.d+"s");
-    el.style.setProperty("--swd",(i*.8)+"s");
+    el.style.setProperty("--swd",(i*.55)+"s");
+    el.style.zIndex=sp.z;
 
     const stem=document.createElement("span");
     stem.className="gl__stem";
     el.appendChild(stem);
 
-    [{t:40,side:1,r:-34,w:1.0},{t:58,side:-1,r:30,w:.88},{t:73,side:1,r:-24,w:.74}]
+    [{t:38,side:1,r:-34,w:1.0},{t:56,side:-1,r:30,w:.88},
+     {t:72,side:1,r:-24,w:.74},{t:86,side:-1,r:20,w:.6}]
       .forEach((lf,k)=>{
         const L=document.createElement("span");
         L.className="gl__leaf"+(lf.side<0?" gl__leaf--l":"");
@@ -402,9 +424,15 @@ function bloom(){
         L.style.setProperty("--lw",(lf.w*54)+"px");
         L.style.setProperty("--lh",(lf.w*21)+"px");
         L.style.setProperty("--lr",lf.r+"deg");
-        L.style.setProperty("--ld",(sp.d+.95+k*.22)+"s");
+        L.style.setProperty("--ld",(sp.d+.9+k*.2)+"s");
         el.appendChild(L);
       });
+
+    // a bud that swells, then the flower opens out of it
+    const bud=document.createElement("span");
+    bud.className="gl__bud";
+    bud.style.setProperty("--bd",(sp.bloom-1.15)+"s");
+    el.appendChild(bud);
 
     const head=document.createElement("span");
     head.className="gl__head";
@@ -412,12 +440,35 @@ function bloom(){
     el.appendChild(head);
 
     g.appendChild(el);
-    setTimeout(()=>el.classList.add("sway"),(sp.bloom+1.7)*1000);
+
+    // sparkle burst the moment it opens
+    setTimeout(()=>sparkle(head),(sp.bloom+.75)*1000);
+    setTimeout(()=>el.classList.add("sway"),(sp.bloom+1.8)*1000);
   });
 
   butterflies();
-  T(()=>$("bloomText").classList.add("on"),3900);
-  T(()=>dissolve(g),7000);
+  T(()=>$("bloomText").classList.add("on"),5200);
+  T(()=>dissolve(g),10000);        // +3s longer than before
+}
+
+/* little sparkle ring when a flower opens */
+function sparkle(host){
+  const r=host.getBoundingClientRect();
+  if(!r.width) return;
+  for(let i=0;i<10;i++){
+    const s=document.createElement("i");
+    s.className="spk";
+    const a=Math.random()*Math.PI*2, d=r.width*(.25+Math.random()*.3);
+    s.style.left=(r.left+r.width/2)+"px";
+    s.style.top=(r.top+r.height/2)+"px";
+    document.body.appendChild(s);
+    s.animate([
+      {transform:"translate(-50%,-50%) scale(.2) rotate(0deg)",opacity:0},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d}px),calc(-50% + ${Math.sin(a)*d}px)) scale(1) rotate(120deg)`,opacity:1,offset:.45},
+      {transform:`translate(calc(-50% + ${Math.cos(a)*d*1.5}px),calc(-50% + ${Math.sin(a)*d*1.5}px)) scale(.2) rotate(220deg)`,opacity:0}
+    ],{duration:1100+Math.random()*500,easing:"cubic-bezier(.2,.7,.4,1)",delay:Math.random()*260,fill:"forwards"});
+    setTimeout(()=>s.remove(),2100);
+  }
 }
 
 /* cute butterflies drifting past the flowers */
@@ -489,10 +540,24 @@ function timeline(){
     el.innerHTML=`
       <div class="tl-slide__img"></div>
       <div class="tl-slide__grad"></div>
+      ${s.note?`<div class="tl-note tl-note--${s.pos||"tr"}">${s.note}</div>`:""}
+      ${s.hearts?`<div class="tl-hearts"></div>`:""}
       <div class="tl-slide__txt">
         ${s.date?`<p class="tl-slide__date">${s.date}</p>`:""}
         <p class="tl-slide__line">${s.line}</p>
       </div>`;
+    if(s.hearts){
+      const hw=el.querySelector(".tl-hearts");
+      for(let k=0;k<7;k++){
+        const h=document.createElement("i");
+        h.textContent="\u2665";
+        h.style.left=(12+Math.random()*76)+"%";
+        h.style.setProperty("--hs",(12+Math.random()*14).toFixed(0)+"px");
+        h.style.setProperty("--hd",(1+Math.random()*1.8).toFixed(2)+"s");
+        h.style.setProperty("--hx",(Math.random()*50-25).toFixed(0)+"px");
+        hw.appendChild(h);
+      }
+    }
     const holder=el.querySelector(".tl-slide__img");
     const im=new Image(); im.src=DIR+s.photo; im.alt="";
     im.onerror=()=>{ holder.innerHTML=`<div class="tl-slide__ph">photo ${i+1}</div>`; };
@@ -634,7 +699,7 @@ document.querySelectorAll(".next").forEach(btn=>{
 
 /* ═══════ PART 3 — WHAT COMES NEXT ═══════ */
 function initRest(){
-  countdown(); places(); jar(); theAsk(); certificate(); capsule(); revealer();
+  countdown(); jar(); theAsk(); certificate(); capsule(); revealer();
 }
 
 /* ── reveal on scroll ── */
@@ -673,20 +738,6 @@ function countdown(){
     set("seconds",s%60);
   };
   tick(); setInterval(tick,1000);
-}
-
-/* ── places ── */
-function places(){
-  const wrap=$("places");
-  CONFIG.places.forEach((p,i)=>{
-    const el=document.createElement("button");
-    el.className="place";
-    el.innerHTML=`<span class="place__n">${String(i+1).padStart(2,"0")}</span>
-      <span class="place__name">${p.name}</span>
-      <span class="place__what">${p.what}</span>`;
-    el.addEventListener("click",()=>el.classList.toggle("open"));
-    wrap.appendChild(el);
-  });
 }
 
 /* ── reasons jar ── */
